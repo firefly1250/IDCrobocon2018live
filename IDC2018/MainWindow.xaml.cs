@@ -23,25 +23,13 @@ namespace IDC2018
     {
         public Collection<EncoderDevice> VideoDevices { get; set; }
 
-        DispatcherTimer timer;
-        DateTime start;
+        Window1 window1;
 
         public MainWindow()
         {
             InitializeComponent();
 
             this.DataContext = this;
-
-            timer = new DispatcherTimer(DispatcherPriority.Normal)
-            {
-                Interval = TimeSpan.FromMilliseconds(100)
-            };
-            timer.Tick += (s, e) =>
-            {
-                var data = DateTime.Now - start;
-                if (data.TotalMinutes >= 2) data = TimeSpan.FromMinutes(2);
-                timer_block.Text = data.ToString(@"mm':'ss");
-            };
 
             this.CommandBindings.Add(new CommandBinding(MyCommands.FullScreen, async (s, e) =>
             {
@@ -50,8 +38,7 @@ namespace IDC2018
                     this.WindowState = WindowState.Normal;
                     menu.Visibility = Visibility.Collapsed;
                     this.WindowStyle = WindowStyle.None;
-                    //this.AllowsTransparency = true;
-                    this.Topmost = true;
+                    //this.Topmost = true;
                     this.WindowState = WindowState.Maximized;
                     this.ResizeMode = ResizeMode.NoResize;
 
@@ -63,9 +50,8 @@ namespace IDC2018
                 {
                     this.ResizeMode = ResizeMode.CanResize;
                     menu.Visibility = Visibility.Visible;
-                    //this.AllowsTransparency = true;
                     this.WindowStyle = WindowStyle.SingleBorderWindow;
-                    this.Topmost = false;
+                    //this.Topmost = false;
                     this.WindowState = WindowState.Maximized;
                 }
             }));
@@ -87,66 +73,11 @@ namespace IDC2018
 
 
             VideoDevices = EncoderDevices.FindDevices(EncoderDeviceType.Video);
+
+            window1 = new Window1();
+            window1.Show();
+
+            this.Closed += (s, e) => window1.Close();
         }
-
-        void UpdateScore()
-        {
-            var blue_score = ((int)blue_scroll.Value) 
-                       + (blue_star1.Opacity == 1 ? 10 : 0)
-                       + (blue_star2.Opacity == 1 ? 30 : 0)
-                       + (blue_star3.Opacity == 1 ? 10 : 0)
-                       + (blue_starball.Opacity == 1 ? 10 : 0);
-
-            if (blue_starball.Opacity == 1) blue_score *= 2;
-
-            blue_scorebox.Text = blue_score.ToString();
-
-            var red_score = ((int)red_scroll.Value)
-                       + (red_star1.Opacity == 1 ? 10 : 0)
-                       + (red_star2.Opacity == 1 ? 30 : 0)
-                       + (red_star3.Opacity == 1 ? 10 : 0)
-                       + (red_starball.Opacity == 1 ? 10 : 0);
-
-            if (red_starball.Opacity == 1) red_score *= 2;
-
-            red_scorebox.Text = red_score.ToString();
-        }
-
-
-        private void star_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            var image = sender as Image;
-            image.Opacity = image.Opacity == 1 ? 0.3 : 1;
-            UpdateScore();
-        }
-
-        private void blue_scroll_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
-        {
-            blue_insectbox.Text = ((int)blue_scroll.Value).ToString();
-            UpdateScore();
-        }
-
-        private void red_scroll_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
-        {
-            red_insectbox.Text = ((int)red_scroll.Value).ToString();
-            UpdateScore();
-        }
-
-        private void timer_block_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            if (timer.IsEnabled)
-            {
-                timer.Stop();
-                timer_block.Text = "00:00";
-            }
-            else
-            {
-                start = DateTime.Now;
-                timer.Start();
-            }
-        }
-
-        private void scroll_MouseEnter(object sender, MouseEventArgs e) => ((ScrollBar)sender).Opacity = 1;
-        private void scroll_MouseLeave(object sender, MouseEventArgs e) => ((ScrollBar)sender).Opacity = 0;
     }
 }

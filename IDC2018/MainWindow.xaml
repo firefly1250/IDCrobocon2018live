@@ -6,32 +6,16 @@
         xmlns:local="clr-namespace:IDC2018"
         mc:Ignorable="d"
         xmlns:cam="clr-namespace:WebcamControl;assembly=WebcamControl"
-        Title="IDC 2018"
-        WindowState="Maximized" >
-    <DockPanel>
-        <!-- メニューを画面上部に配置 -->
-        <Menu x:Name="menu" DockPanel.Dock="Top">
-            <MenuItem Header="Devices(_D)" 
-                      ItemsSource="{Binding VideoDevices}"
-                      DisplayMemberPath="Name">
-                <MenuItem.CommandBindings>
-                    <CommandBinding Command="local:MyCommands.SelectDevice"/>
-                </MenuItem.CommandBindings>
-                <MenuItem.ItemContainerStyle>
-                    <Style TargetType="{x:Type MenuItem}">
-                        <Setter Property="Command" Value="local:MyCommands.SelectDevice"/>
-                        <Setter Property="CommandParameter" Value="{Binding}"/>
-                    </Style>
-                </MenuItem.ItemContainerStyle>
-            </MenuItem>
-            <MenuItem Header="Window(_W)">
-                <MenuItem Header="Full Screen (_F)" Command="local:MyCommands.FullScreen"/>
-            </MenuItem>
-        </Menu>
-
-        <Grid>
-            <cam:Webcam x:Name="WebcamViewer"
+        Title="IDC 2018" WindowStyle="None">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="100"/>
+        </Grid.RowDefinitions>
+        <cam:Webcam x:Name="WebcamViewer" Grid.Row="0"
                         FrameRate="30" FrameSize="1920,1080"/>
-        </Grid>
-    </DockPanel>
+        <GridSplitter Grid.Row="1" Height="5" VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
+        <Rectangle x:Name="rect" Grid.Row="2" Fill="Black"/>
+    </Grid>
 </Window>

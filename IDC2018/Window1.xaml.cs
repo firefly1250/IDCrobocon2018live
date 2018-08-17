@@ -94,5 +94,10 @@ namespace IDC2018
 
         private void scroll_MouseEnter(object sender, MouseEventArgs e) => ((ScrollBar)sender).Opacity = 1;
         private void scroll_MouseLeave(object sender, MouseEventArgs e) => ((ScrollBar)sender).Opacity = 0;
+
+        private void Window_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            ResizeMode = ResizeMode == ResizeMode.CanResizeWithGrip ? ResizeMode.CanResize : ResizeMode.CanResizeWithGrip;
+        }
     }
 }

@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Title="IDC 2018"
         WindowStyle="None" AllowsTransparency="True" Topmost="True"
-        Height="60" Width="1200"  Background="Transparent"
+        Height="60" Width="1000"  Background="Transparent"
         MouseDoubleClick="Window_MouseDoubleClick">
 
     <Grid>
@@ -23,7 +23,8 @@
                 <ColumnDefinition Width="10"/>
                 <ColumnDefinition Width="2*"/>
             </Grid.ColumnDefinitions>
-            <Grid Grid.Column="0" Background="#FF333333">
+            <Grid Grid.Column="0" Background="#FF333333"
+                  Opacity="0.9">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="3*"/>
                     <ColumnDefinition Width="1*"/>
@@ -68,9 +69,18 @@
                         <Image x:Name="blue_star3" Grid.Column="4" Source="star.png" Width="30" Height="30" Opacity="0.3" MouseLeftButtonDown="star_MouseLeftButtonDown"/>
                     </Grid>
                 </Grid>
-                <Ellipse Grid.Column="1" 
-                         Width="40" Height="40" Fill="Green" 
+                <Grid Grid.Column="1" >
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="3*"/>
+                        <RowDefinition Height="2*"/>
+                    </Grid.RowDefinitions>
+                <Ellipse x:Name="ellipse_blue" Grid.Row="0"
+                         Width="45" Height="30" Fill="Green" 
                      Stroke="White" StrokeThickness="3"/>
+                    <TextBlock x:Name="team_blue" Grid.Row="1" Text="Team" 
+                               Foreground="White" FontWeight="Bold" FontSize="20"
+                               VerticalAlignment="Bottom" HorizontalAlignment="Center"/>
+                </Grid>
 
                 <TextBlock Grid.Column="2" x:Name="blue_scorebox" FontSize="40" Text="0" 
                                    HorizontalAlignment="Center" 
@@ -79,15 +89,17 @@
             </Grid>
 
 
-            <Grid Grid.Column="2" Background="#FF333333">
-                <TextBlock x:Name="timer_block" Text="00:00"
+            <Grid Grid.Column="2" Background="#FF333333"
+                  Opacity="0.9">
+                <TextBlock x:Name="timer_block" Text="02:00"
                                VerticalAlignment="Center" HorizontalAlignment="Center"
                        Foreground="White" FontWeight="Bold"
                                FontSize="40" MouseLeftButtonDown="timer_block_MouseLeftButtonDown"/>
             </Grid>
 
 
-            <Grid Grid.Column="4" Background="#FF333333" FlowDirection="RightToLeft">
+            <Grid Grid.Column="4" Background="#FF333333" FlowDirection="RightToLeft"
+                  Opacity="0.9">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="3*"/>
                     <ColumnDefinition Width="1*"/>
@@ -132,9 +144,18 @@
                         <Image x:Name="red_star3" Grid.Column="4" Source="star.png" Width="30" Height="30" Opacity="0.3" MouseLeftButtonDown="star_MouseLeftButtonDown"/>
                     </Grid>
                 </Grid>
-                <Ellipse Grid.Column="1" 
-                         Width="40" Height="40" Fill="Navy" 
+                <Grid Grid.Column="1" >
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="3*"/>
+                        <RowDefinition Height="2*"/>
+                    </Grid.RowDefinitions>
+                    <Ellipse x:Name="ellipse_red" Grid.Row="0"
+                         Width="45" Height="30" Fill="Green" 
                      Stroke="White" StrokeThickness="3"/>
+                    <TextBlock x:Name="team_red" Grid.Row="1" Text="Team" 
+                               Foreground="White" FontWeight="Bold" FontSize="20"
+                               VerticalAlignment="Bottom" HorizontalAlignment="Center"/>
+                </Grid>
 
                 <TextBlock Grid.Column="2" x:Name="red_scorebox" FontSize="40" Text="0" 
                                    HorizontalAlignment="Center" 

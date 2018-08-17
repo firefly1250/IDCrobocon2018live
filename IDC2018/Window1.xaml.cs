@@ -4,12 +4,27 @@ using System.Windows.Threading;
 using System;
 using System.Windows.Controls.Primitives;
 using System.Windows.Controls;
+using System.Windows.Media;
+using System.Collections.Generic;
 
 namespace IDC2018
 {
     /// <summary>
     /// Interaction logic for Window1.xaml
     /// </summary>
+    /// 
+    class TeamColor
+    {
+        public string Name { get; }
+        public SolidColorBrush Color { get; }
+
+        public TeamColor(string name, Color color)
+        {
+            Name = name;
+            Color = new SolidColorBrush(color);
+        }
+    }
+
     public partial class Window1 : Window
     {
         DispatcherTimer timer;
@@ -31,8 +46,48 @@ namespace IDC2018
             {
                 var data = DateTime.Now - start;
                 if (data.TotalMinutes >= 2) data = TimeSpan.FromMinutes(2);
+                data = TimeSpan.FromMinutes(2) - data;
                 timer_block.Text = data.ToString(@"mm':'ss");
             };
+
+            var teams = new TeamColor[]
+            {
+                new TeamColor("Apricot", Color.FromRgb(241, 143, 49)),
+                new TeamColor("Meron", Color.FromRgb(133, 193, 45)),
+                new TeamColor("Pink", Color.FromRgb(227, 57, 142)),
+                new TeamColor("Yellow", Color.FromRgb(232, 231, 60)),
+                new TeamColor("Mint", Color.FromRgb(113, 196, 176)),
+                new TeamColor("Green", Color.FromRgb(14, 111, 56)),
+                new TeamColor("Purple", Color.FromRgb(136, 103, 170)),
+                new TeamColor("Red", Color.FromRgb(180, 29, 39)),
+                new TeamColor("Blue", Color.FromRgb(44, 83, 164)),
+                new TeamColor("Navy", Color.FromRgb(31, 43, 99)),
+                new TeamColor("Brown", Color.FromRgb(84, 52, 23))
+            };
+
+
+            ellipse_blue.ContextMenu = new ContextMenu();
+            ellipse_red.ContextMenu = new ContextMenu();
+            foreach (var team in teams)
+            {
+                var item_blue = new MenuItem() { Header = team.Name, CommandParameter = team, Background=team.Color};
+                item_blue.Click += (s, e) =>
+                {
+                    var param = ((MenuItem)s).CommandParameter as TeamColor;
+                    ellipse_blue.Fill = param.Color;
+                    team_blue.Text = param.Name;
+                };
+                    ellipse_blue.ContextMenu.Items.Add(item_blue);
+
+                var item_red = new MenuItem() { Header = team.Name, CommandParameter = team, Background = team.Color };
+                item_red.Click += (s, e) =>
+                {
+                    var param = ((MenuItem)s).CommandParameter as TeamColor;
+                    ellipse_red.Fill = param.Color;
+                    team_red.Text = param.Name;
+                };
+                ellipse_red.ContextMenu.Items.Add(item_red);
+            }
         }
 
         void UpdateScore()
@@ -83,7 +138,7 @@ namespace IDC2018
             if (timer.IsEnabled)
             {
                 timer.Stop();
-                timer_block.Text = "00:00";
+                timer_block.Text = "02:00";
             }
             else
             {

@@ -15,8 +15,6 @@ namespace IDC2018
     
     public partial class MainWindow : Window
     {
-        public Collection<EncoderDevice> VideoDevices { get; set; }
-
         Window1 window1;
 
         protected override void OnMouseLeftButtonDown(MouseButtonEventArgs e)
@@ -31,23 +29,25 @@ namespace IDC2018
             this.DataContext = this;
             
             window1 = new Window1();
+            window1.Closed += (s, e) => this.Close();
             window1.Show();
 
             this.Closed += (s, e) => window1.Close();
 
-            ContextMenu contextMenu = new ContextMenu();
-            rect.ContextMenu = contextMenu;
+            rect.ContextMenu = new ContextMenu();
 
             rect.ContextMenu.Opened += (s, e) =>
             {
-                VideoDevices = EncoderDevices.FindDevices(EncoderDeviceType.Video);
+                var VideoDevices = EncoderDevices.FindDevices(EncoderDeviceType.Video);
 
                 rect.ContextMenu.Items.Clear();
 
                 foreach (var device in VideoDevices)
                 {
-                    MenuItem menuItem = new MenuItem();
-                    menuItem.Header = device.Name;
+                    var menuItem = new MenuItem
+                    {
+                        Header = device.Name
+                    };
                     menuItem.Click += (s1, e1) =>
                     {
                         WebcamViewer.VideoDevice = device;
@@ -63,6 +63,26 @@ namespace IDC2018
                     rect.ContextMenu.Items.Add(menuItem);
                 }
             };
+        }
+
+        bool waiting = false;
+        private async void WebcamViewer_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            if (waiting) return;
+            waiting = true;
+            WebcamViewer.StopPreview();
+            await Task.Delay(100);
+            WebcamViewer.StartPreview();
+            waiting = false;
+        }
+
+        private void Window_KeyDown(object sender, KeyEventArgs e)
+        {
+            if(e.Key == Key.F11)
+            {
+                if (WindowState == WindowState.Maximized) WindowState = WindowState.Normal;
+                else WindowState = WindowState.Maximized;
+            }
         }
     }
 }
